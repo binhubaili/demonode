@@ -1,3 +1,4 @@
+'user strict';
 const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
@@ -18,17 +19,35 @@ con.connect((err)=>{
 
 });
 
-router.get('/', (req, res, next) =>{
-	con.query('SELECT * from employee',(err, rows, fields) => {
-		if (!err) {
-			 console.log(rows); //shows data in console 
-			res.send(rows)  // shows data in browser
-			// res.status(201).json({
-			// 	details: rows
-			// })
-		}else{
-			console.log(err);
-		}
-	})
+
+
+
+//local mysql db connection
+
+
+
+// router.get('/', (req, res, next) =>{
+// 	con.query('SELECT * from employee',(err, rows, fields) => {
+// 		if (!err) {
+// 			 console.log(rows); //shows data in console 
+// 			res.send(rows)  // shows data in browser
+// 			// res.status(201).json({
+// 			// 	details: rows
+// 			// })
+// 		}else{
+// 			console.log(err);
+// 		}
+// 	})
+// });
+con.connect(function(req, res, next)  {
+  // if (err) throw err;
+  var data = con.query("SELECT * FROM employee", function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+     // res.send(result);
+  //    result.json({
+  //    	details : result
+			 	
+	 })
 });
 module.exports = router;
