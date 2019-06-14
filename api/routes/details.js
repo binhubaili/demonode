@@ -22,38 +22,28 @@ const mysql = require('mysql');
 
 
 
-//local mysql db connection
-var db_config = {
-  host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'employee'
-};
+// var mysql = require('mysql');
+var pool  = mysql.createPool({
+  host     : 'localhost',
+  user     : 'root',
+  password : 'password',
+  database : 'employee'
+});
 
-var connection;
+pool.getConnection(function(err, connection) {
+   console.log("Database is connected ... nn");
+  // Use the connection
+  connection.query('SELECT * FROM employee', function (error, results, fields) {
+    // And done with the connection.
+    console.log(results);
+    connection.release();
 
-function handleDisconnect() {
-  connection = mysql.createConnection(db_config); // Recreate the connection, since
-                                                  // the old one cannot be reused.
+    // Handle error after the release.
+    if (error) throw error;
 
-  connection.connect(function(err) {              // The server is either down
-    if(err) {                                     // or restarting (takes a while sometimes).
-      console.log('error when connecting to db:', err);
-      setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
-    }                                     // to avoid a hot loop, and to allow our node script to
-  });                                     // process asynchronous requests in the meantime.
-                                          // If you're also serving http, display a 503 error.
-  connection.on('error', function(err) {
-    console.log('db error', err);
-    if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-      handleDisconnect();                         // lost due to either server restart, or a
-    } else {                                      // connnection idle timeout (the wait_timeout
-      throw err;                                  // server variable configures this)
-    }
+    // Don't use the connection here, it has been returned to the pool.
   });
-}
-
-handleDisconnect();
+});
 
 
 // router.get('/', (req, res, next) =>{
@@ -67,17 +57,17 @@ handleDisconnect();
 // 		}else{
 // 			console.log(err);
 // 		}
-// 	})
-// });
-connection.connect(function(req, res, next)  {
-  // if (err) throw err;
-  var data = connection.query("SELECT * FROM employee", function (err, result, fields) {
-    if (err) throw err;
-    console.log(result);
-     // res.send({message: "sdfsdf"});
-  //    result.json({
-  //    	details : result
+// // 	})
+// // });
+// connection.connect(function(req, res, next)  {
+//   // if (err) throw err;
+//   var data = connection.query("SELECT * FROM employee", function (err, result, fields) {
+//     if (err) throw err;
+//     console.log(result);
+//      // res.send({message: "sdfsdf"});
+//   //    result.json({
+//   //    	details : result
 			 	
-	 })
-});
+// 	 })
+// });
 module.exports = router;
