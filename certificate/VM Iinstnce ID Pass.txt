@@ -1,0 +1,8 @@
+VM Instance username: employee
+VM Instance Password: 1#4];G<hM~W%KBj
+
+To set instance with proxy port :
+
+>cloud_sql_proxy -instances=instance-connection-name=tcp:3306 
+
+(tcp:3306/3366/3377, it should be same with workbench instance.)

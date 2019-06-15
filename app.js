@@ -1,9 +1,12 @@
+
+
 const express = require('express');
 const app = express();
 //const morgan = require('morgan');//It gives log means status code and execution time
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 
+app.enable('trust proxy');
 //Database Connection 
 // var mysqlConnection = mysql.createConnection({
 // 	host: 'localhost',
