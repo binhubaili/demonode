@@ -24,7 +24,7 @@ app.enable('trust proxy');
 
 // const productRoutes = require('./api/routes/products');
 // const orderRoutes = require('./api/routes/orders');
-// const signupRoutes = require('./api/routes/signup');
+const signupRoutes = require('./api/routes/signup');
 const detailsRoutes = require('./api/routes/details');
 
 //app.use(morgan('dev'));
@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({extended: false}));//Support simple body urlencod
 app.use(bodyParser.json());//It can accept json data in simple readable form
 
 
-// app.use('/signup', signupRoutes);
+app.use('/signup', signupRoutes);
 app.use('/details', detailsRoutes);
 
 // //Error Handling
